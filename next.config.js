@@ -5,7 +5,7 @@ module.exports = {
       'cdn.pixabay.com',
       'platform-lookaside.fbsbx.com',
       'firebasestorage.googleapis.com',
-      'fakestoreapi.com  ',
+      'fakestoreapi.com',
     ],
   },
 };
