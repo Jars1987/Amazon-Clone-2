@@ -2,15 +2,33 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { StarIcon } from '@heroicons/react/solid';
 import NumberFormat from 'react-number-format';
+import { useDispatch } from 'react-redux';
+import { addToBasket } from '../slices/basketSlice';
 
 const MAX_RATING = 5;
 const MIN_RATING = 1;
 
 function Product({ id, title, description, price, category, image }) {
+  const dispatch = useDispatch();
   const [rating] = useState(
     Math.floor(Math.random() * MAX_RATING - MIN_RATING + 1) + MIN_RATING
   );
   const [hasPrime] = useState(Math.random() < 0.5);
+
+  const addItemToBasket = () => {
+    const product = {
+      id,
+      title,
+      description,
+      price,
+      category,
+      image,
+      hasPrime,
+      rating,
+      quantity: 1,
+    };
+    dispatch(addToBasket(product));
+  };
 
   return (
     <div className='relative flex flex-col m-5 bg-white z-30 p-10'>
@@ -22,9 +40,9 @@ function Product({ id, title, description, price, category, image }) {
       <div className='flex'>
         {Array(rating)
           .fill()
-          .map((_, i) => {
-            return <StarIcon key={i} className='h-5 text-yellow-500' />;
-          })}
+          .map((_, i) => (
+            <StarIcon key={i} className='h-5 text-yellow-500' />
+          ))}
       </div>
       <p className='text-xs my-2 line-clamp-2'>{description}</p>
       <div className='mb-5 '>
@@ -40,7 +58,9 @@ function Product({ id, title, description, price, category, image }) {
           <p className='text-xs text-gray-500'>FREE Next-Day Delviery</p>
         </div>
       )}
-      <button className='mt-auto button'>Add to Basket</button>
+      <button onClick={addItemToBasket} className='mt-auto button'>
+        Add to Basket
+      </button>
     </div>
   );
 }
