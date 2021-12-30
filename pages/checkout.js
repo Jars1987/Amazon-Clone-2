@@ -10,16 +10,35 @@ import {
   selectTotalPrice,
   selectTotalQty,
 } from '../slices/basketSlice';
-import { itemsCounter } from '../utils/itemsCounter';
 import NumberFormat from 'react-number-format';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
+
+const stripePromise = loadStripe(process.env.stripe_public_key);
 
 function Checkout() {
   const [openToggle, setOpenToggle] = useState(false);
   const { data: session } = useSession();
   const items = useSelector(selectItems);
-  //const [totalItems, totalPrice] = itemsCounter(items);
   const totalItems = useSelector(selectTotalQty);
   const totalPrice = useSelector(selectTotalPrice);
+
+  const createCheckoutSession = async () => {
+    const stripe = await stripePromise;
+
+    //call the backend to create checkout session
+    const checkoutSession = await axios.post('/api/create-checkout-session', {
+      items,
+      email: session.user.email,
+    });
+
+    //redirect user to to stripe checkout
+    const result = await stripe.redirectToCheckout({
+      sessionId: checkoutSession.data.id,
+    });
+
+    if (result.error) alert(result.error.message);
+  };
 
   return (
     <div className='bg-gray-100'>
@@ -70,10 +89,12 @@ function Checkout() {
                 </span>
               </h2>
               <button
+                onClick={createCheckoutSession}
                 className={`button mt-2 ${
                   !session &&
                   'from-gray-300 to-gray-500 border-gray-200 text-gray-300 cursor-not-allowed'
-                }`}>
+                }`}
+                role='linknpm '>
                 {!session ? 'Sign in to Checkout' : 'Proceed to Checkout'}
               </button>
             </>
