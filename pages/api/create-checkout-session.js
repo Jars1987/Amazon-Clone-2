@@ -24,11 +24,13 @@ export default async (req, res) => {
     },
     line_items: transformedItems,
     mode: 'payment',
-    success_url: `${process.env.HOST}/sucess`,
+    success_url: `${process.env.HOST}/success`,
     cancel_url: `${process.env.HOST}/checkout`,
     metadata: {
       email,
       images: JSON.stringify(items.map(item => item.image)),
+      names: JSON.stringify(items.map(item => item.title)),
+      productIds: JSON.stringify(items.map(item => item.id)),
     },
   });
 

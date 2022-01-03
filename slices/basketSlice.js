@@ -1,4 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const reOrderProducts = createAsyncThunk(
+  'basket/reorder',
+  async productIds => {
+    const products = Promise.all(
+      productIds.map(id =>
+        axios.get(`https://fakestoreapi.com/products/${id}`).then(response => {
+          return {
+            id: response.data.id,
+            title: response.data.title,
+            description: response.data.description,
+            price: response.data.price,
+            category: response.data.category,
+            image: response.data.image,
+            hasPrime: Math.random() < 0.5,
+            rating: response.data.rating,
+            quantity: 1,
+          };
+        })
+      )
+    );
+    return products;
+  }
+);
 
 const initialState = {
   items: [],
@@ -70,6 +95,11 @@ export const basketSlice = createSlice({
       }
 
       state.items = newBasket;
+    },
+  },
+  extraReducers: {
+    [reOrderProducts.fulfilled]: (state, action) => {
+      state.items = [...state.items, ...action.payload];
     },
   },
 });

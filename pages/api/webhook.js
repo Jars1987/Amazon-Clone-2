@@ -1,4 +1,6 @@
 import { buffer } from 'micro';
+import admin from 'firebase-admin';
+
 const {
   initializeApp,
   applicationDefault,
@@ -13,15 +15,11 @@ const {
 //Connect to firebase
 const serviceAccount = require('../../permissions.json');
 
-let app;
-
-if (app == null) {
-  app = initializeApp({
-    credential: cert(serviceAccount),
-  });
-} else {
-  app = app();
-}
+const app = !admin.apps.length
+  ? initializeApp({
+      credential: cert(serviceAccount),
+    })
+  : admin.app();
 
 const db = getFirestore();
 
@@ -41,7 +39,9 @@ const fulfillOrder = async session => {
     .set({
       amount: session.amount_total / 100,
       amount_shipping: session.total_details.amount_shipping / 100,
-      images: JSNON.parse(session.metadata.images),
+      images: JSON.parse(session.metadata.images),
+      names: JSON.parse(session.metadata.names),
+      productIds: JSON.parse(session.metadata.productIds),
       timestamp: FieldValue.serverTimestamp(),
     })
     .then(() => {
@@ -74,7 +74,7 @@ export default async (req, res) => {
 
       //fulfill the order
       return fulfillOrder(session)
-        .then(() => res.status(200))
+        .then(() => res.status(200).end())
         .catch(e => {
           console.log(`Webhook fulfillOrder error: ${e.message}`);
           return res

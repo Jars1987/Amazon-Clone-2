@@ -1,10 +1,8 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import CheckoutProduct from '../components/CheckoutProduct';
-import Header from '../components/Header';
-import SideOptions from '../components/SideOptions';
+import HeaderComponent from '../components/HeaderComponent';
 import {
   selectItems,
   selectTotalPrice,
@@ -17,7 +15,6 @@ import axios from 'axios';
 const stripePromise = loadStripe(process.env.stripe_public_key);
 
 function Checkout() {
-  const [openToggle, setOpenToggle] = useState(false);
   const { data: session } = useSession();
   const items = useSelector(selectItems);
   const totalItems = useSelector(selectTotalQty);
@@ -42,16 +39,7 @@ function Checkout() {
 
   return (
     <div className='bg-gray-100'>
-      {openToggle && (
-        <>
-          <div className='absolute z-40 w-full h-full bg-black opacity-50' />
-          <SideOptions
-            userName={session.user.name}
-            handleToggle={() => setOpenToggle(!openToggle)}
-          />
-        </>
-      )}
-      <Header handleToggle={() => setOpenToggle(!openToggle)} />
+      <HeaderComponent />
 
       <main className='lg:flex max-w-screen-2xl mx-auto'>
         <div className='flex-grow m-5 shadow-sm'>
