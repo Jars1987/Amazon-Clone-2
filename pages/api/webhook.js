@@ -13,11 +13,10 @@ const {
 } = require('firebase-admin/firestore');
 
 //Connect to firebase
-const serviceAccount = require('../../permissions.json');
 
 const app = !admin.apps.length
   ? initializeApp({
-      credential: cert(serviceAccount),
+      credential: cert(process.env.SERVICE_ACCOUNT),
     })
   : admin.app();
 
