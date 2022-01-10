@@ -2,7 +2,11 @@ import { StarIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import NumberFormat from 'react-number-format';
 import { useDispatch } from 'react-redux';
-import { addToBasket, removeFromBasket } from '../slices/basketSlice';
+import {
+  addToBasket,
+  removeFromBasket,
+  removeAllFromBasket,
+} from '../slices/basketSlice';
 
 function CheckoutProduct({
   id,
@@ -35,8 +39,13 @@ function CheckoutProduct({
   const removeItemFromBasket = () => {
     dispatch(removeFromBasket({ id }));
   };
+
+  const removeAllItemsFromBasket = () => {
+    dispatch(removeAllFromBasket({ id }));
+  };
+
   return (
-    <div className='grid grid-cols-5'>
+    <div className='grid grid-cols-5 mb-5'>
       <Image src={image} width={200} height={200} objectFit='contain' />
       <div className='col-span-3 mx-5'>
         <p>{title}</p>
@@ -47,10 +56,17 @@ function CheckoutProduct({
               <StarIcon key={i} className='h-5 text-yellow-500' />
             ))}
         </div>
-        <p className='text-xs my-2 line-clamp-3'>{description}</p>
-        <div className='flex items-center space-x-2'>
+        <p className='text-xs my-2 line-clamp-2'>{description}</p>
+        <div className='flex flex-start items-center space-x-2'>
           <NumberFormat value={price} prefix={'€'} displayType={'text'} />
-          <p className='font-bold'>{quantity === 1 ? '' : `x ${quantity}`}</p>
+          <div className='flex'>
+            <p className='text-center mx-auto'>
+              Quantity:{' '}
+              <span className='font-bold'>
+                {quantity === 1 ? '1' : quantity}
+              </span>
+            </p>
+          </div>
         </div>
         {hasPrime && (
           <div className='flex items-center space-x-2'>
@@ -64,13 +80,21 @@ function CheckoutProduct({
           </div>
         )}
       </div>
-      <div className='flex flex-col space-y-2 my-auto justify-self-end'>
-        <button onClick={addItemToBasket} className='button'>
-          Add To Basket
-        </button>
-        <button onClick={removeItemFromBasket} className='button'>
-          Remove From Basket
-        </button>
+      <div className='justify-self-end'>
+        <div className='flex flex-col mt-2 space-y-2 md:flex-row md:space-x-2 md:space-y-0 '>
+          <button onClick={addItemToBasket} className='signButton'>
+            +
+          </button>
+          <button onClick={removeAllItemsFromBasket} className='button'>
+            Remove From Basket
+          </button>
+          <button
+            onClick={removeItemFromBasket}
+            disabled={quantity === 1}
+            className='signButton'>
+            -
+          </button>
+        </div>
       </div>
     </div>
   );

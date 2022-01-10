@@ -11,6 +11,8 @@ import {
 import NumberFormat from 'react-number-format';
 import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
+import { ShoppingCartIcon } from '@heroicons/react/outline';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const stripePromise = loadStripe(process.env.stripe_public_key);
 
@@ -38,12 +40,17 @@ function Checkout() {
   };
 
   return (
-    <div className='bg-gray-100'>
+    <div className={`bg-gray-100 ${items.length === 0 && 'h-screen'}`}>
       <HeaderComponent />
 
-      <main className='lg:flex max-w-screen-2xl mx-auto'>
-        <div className='flex-grow m-5 shadow-sm'>
-          {/* Left Side */}
+      <main
+        className={`${
+          items.length > 0 ? 'lg:grid lg:grid-cols-5' : 'flex flex-col'
+        } max-w-screen-2xl mx-auto`}>
+        <div
+          className={`${
+            items.length > 0 ? 'lg:col-span-4' : 'flex-grow'
+          } m-6 shadow-sm`}>
           <Image
             src='https://links.papareact.com/ikj'
             alt='advert'
@@ -51,19 +58,35 @@ function Checkout() {
             height={250}
             objectFit='contain'
           />
-          <div className='flex flex-col p-5 space-y-10 bg-white'>
-            <h1 className='text-3xl border-b pb-4'>
-              {items.length === 0 ? 'Your Basket is empty' : 'Shopping Basket'}
-            </h1>
-            {items.map((item, i) => (
-              <CheckoutProduct key={item.id} {...item} />
-            ))}
+          <div
+            className={`${
+              items.length === 0 ? 'mt-14 h-72' : 'mt-4'
+            } flex flex-col p-5 space-y-10 bg-white`}>
+            {items.length === 0 ? (
+              <div className='flex justify-center space-x-10 items-center'>
+                <ShoppingCartIcon className='h-40 color-yellow-400' />
+                <h1 className='text-3xl'>Your Shopping basket is Empy</h1>
+              </div>
+            ) : (
+              <h1 className='text-3xl border-b pb-4'>Shopping Basket</h1>
+            )}
+
+            <TransitionGroup>
+              {items.map((item, i) => (
+                <CSSTransition
+                  key={item.id}
+                  timeout={300}
+                  classNames='transition'>
+                  <CheckoutProduct {...item} />
+                </CSSTransition>
+              ))}
+            </TransitionGroup>
           </div>
         </div>
-        <div className='flex flex-col bg-white p-10 shadow-md'>
-          {/* Right Side */}
-          {items.length > 0 && (
-            <>
+
+        {items.length > 0 && (
+          <>
+            <div className='flex  flex-col bg-white p-10 shadow-md'>
               <h2 className='whitespace-nowrap'>
                 Subtotal ({totalItems}) items:{' '}
                 <span className='font-bold'>
@@ -85,9 +108,9 @@ function Checkout() {
                 role='linknpm '>
                 {!session ? 'Sign in to Checkout' : 'Proceed to Checkout'}
               </button>
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
