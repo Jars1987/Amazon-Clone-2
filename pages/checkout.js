@@ -13,10 +13,12 @@ import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 import { ShoppingCartIcon } from '@heroicons/react/outline';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { useRouter } from 'next/router';
 
 const stripePromise = loadStripe(process.env.stripe_public_key);
 
 function Checkout() {
+  const router = useRouter();
   const { data: session } = useSession();
   const items = useSelector(selectItems);
   const totalItems = useSelector(selectTotalQty);
@@ -65,7 +67,14 @@ function Checkout() {
             {items.length === 0 ? (
               <div className='flex justify-center space-x-10 items-center'>
                 <ShoppingCartIcon className='h-40 color-yellow-400' />
-                <h1 className='text-3xl'>Your Shopping basket is Empy</h1>
+                <div className='flex flex-col items-center '>
+                  <h1 className='text-3xl'>Your Shopping basket is Empy</h1>
+                  <p
+                    onClick={() => router.push('/')}
+                    className='text-blue-300 hover:text-blue-500 cursor-pointer duration-150'>
+                    Continue Shopping
+                  </p>
+                </div>
               </div>
             ) : (
               <h1 className='text-3xl border-b pb-4'>Shopping Basket</h1>

@@ -4,15 +4,17 @@ import { StarIcon } from '@heroicons/react/solid';
 import NumberFormat from 'react-number-format';
 import { useDispatch } from 'react-redux';
 import { addToBasket } from '../slices/basketSlice';
+import { useRouter } from 'next/router';
 
 const MAX_RATING = 5;
 const MIN_RATING = 1;
 
-function Product({ id, title, description, price, category, image }) {
+function Product({ id, title, description, price, category, image, ratings }) {
+  console.log(ratings);
+
+  const router = useRouter();
   const dispatch = useDispatch();
-  const [rating] = useState(
-    Math.floor(Math.random() * MAX_RATING - MIN_RATING + 1) + MIN_RATING
-  );
+  const [rating] = useState(Math.floor(ratings.rate) + MIN_RATING);
   const [hasPrime] = useState(Math.random() < 0.5);
 
   const addItemToBasket = () => {
@@ -30,12 +32,23 @@ function Product({ id, title, description, price, category, image }) {
     dispatch(addToBasket(product));
   };
 
+  const goToProduct = () => {
+    router.push(`/product/${id}`);
+  };
+
   return (
     <div className='relative flex flex-col m-5 bg-white z-30 p-10'>
       <p className='absolute top-2 right-2 text-xs italic text-gray-400'>
         {category}
       </p>
-      <Image src={image} height={200} width={200} objectFit='contain' />
+      <Image
+        onClick={goToProduct}
+        className='cursor-pointer'
+        src={image}
+        height={200}
+        width={200}
+        objectFit='contain'
+      />
       <h4 className='my-3'>{title}</h4>
       <div className='flex'>
         {Array(rating)
@@ -61,6 +74,11 @@ function Product({ id, title, description, price, category, image }) {
       <button onClick={addItemToBasket} className='mt-auto button'>
         Add to Basket
       </button>
+      <p
+        onClick={goToProduct}
+        className='mt-2 text-sm self-center text-blue-300 hover:text-blue-500 cursor-pointer'>
+        Go to Product
+      </p>
     </div>
   );
 }

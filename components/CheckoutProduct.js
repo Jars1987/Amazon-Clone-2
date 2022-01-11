@@ -59,14 +59,6 @@ function CheckoutProduct({
         <p className='text-xs my-2 line-clamp-2'>{description}</p>
         <div className='flex flex-start items-center space-x-2'>
           <NumberFormat value={price} prefix={'€'} displayType={'text'} />
-          <div className='flex'>
-            <p className='text-center mx-auto'>
-              Quantity:{' '}
-              <span className='font-bold'>
-                {quantity === 1 ? '1' : quantity}
-              </span>
-            </p>
-          </div>
         </div>
         {hasPrime && (
           <div className='flex items-center space-x-2'>
@@ -81,18 +73,26 @@ function CheckoutProduct({
         )}
       </div>
       <div className='justify-self-end'>
-        <div className='flex flex-col mt-2 space-y-2 md:flex-row md:space-x-2 md:space-y-0 '>
-          <button onClick={addItemToBasket} className='signButton'>
-            +
-          </button>
-          <button onClick={removeAllItemsFromBasket} className='button'>
-            Remove From Basket
-          </button>
+        <div className='flex flex-col items-center mt-2 space-y-3'>
+          <div className='flex justify-center items-center bg-gray-100 rounded-full w-4/5'>
+            <button
+              onClick={addItemToBasket}
+              className='signButton rounded-l-full'>
+              +
+            </button>
+            <p className='font-bold m-2 px-4'>{quantity}</p>
+            <button
+              onClick={removeItemFromBasket}
+              disabled={quantity === 1}
+              className='signButton rounded-r-full'>
+              -
+            </button>
+          </div>
+
           <button
-            onClick={removeItemFromBasket}
-            disabled={quantity === 1}
-            className='signButton'>
-            -
+            onClick={removeAllItemsFromBasket}
+            className='button rounded-md sm:px-3 '>
+            Remove From Basket
           </button>
         </div>
       </div>

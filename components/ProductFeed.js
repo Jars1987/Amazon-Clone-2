@@ -5,7 +5,7 @@ function ProductFeed({ products }) {
     <div className='grid grid-flow-row-dense grid-cols-[repeat(auto-fit,24rem)] justify-center md:-mt-52'>
       {products
         .slice(0, 4)
-        .map(({ id, title, description, price, category, image }) => (
+        .map(({ id, title, description, price, category, image, rating }) => (
           <Product
             key={id}
             id={id}
@@ -14,6 +14,7 @@ function ProductFeed({ products }) {
             price={price}
             category={category}
             image={image}
+            ratings={rating}
           />
         ))}
       <img
@@ -24,7 +25,7 @@ function ProductFeed({ products }) {
       <div className='md:col-span-2 '>
         {products
           .slice(4, 5)
-          .map(({ id, title, description, price, category, image }) => (
+          .map(({ id, title, description, price, category, image, rating }) => (
             <Product
               key={id}
               id={id}
@@ -33,12 +34,13 @@ function ProductFeed({ products }) {
               price={price}
               category={category}
               image={image}
+              ratings={rating}
             />
           ))}
       </div>
       {products
         .slice(5, products.length)
-        .map(({ id, title, description, price, category, image }) => (
+        .map(({ id, title, description, price, category, image, rating }) => (
           <Product
             key={id}
             id={id}
@@ -47,6 +49,7 @@ function ProductFeed({ products }) {
             price={price}
             category={category}
             image={image}
+            ratings={rating}
           />
         ))}
     </div>
