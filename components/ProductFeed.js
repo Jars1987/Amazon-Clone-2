@@ -1,6 +1,6 @@
 import Product from './Product';
 
-function ProductFeed({ products }) {
+function ProductFeed({ products, createNotification }) {
   return (
     <div className='grid grid-flow-row-dense grid-cols-[repeat(auto-fit,24rem)] justify-center md:-mt-52'>
       {products
@@ -15,6 +15,7 @@ function ProductFeed({ products }) {
             category={category}
             image={image}
             ratings={rating}
+            createNotification={createNotification}
           />
         ))}
       <img
@@ -35,6 +36,7 @@ function ProductFeed({ products }) {
               category={category}
               image={image}
               ratings={rating}
+              createNotification={createNotification}
             />
           ))}
       </div>
@@ -50,6 +52,7 @@ function ProductFeed({ products }) {
             category={category}
             image={image}
             ratings={rating}
+            createNotification={createNotification}
           />
         ))}
     </div>

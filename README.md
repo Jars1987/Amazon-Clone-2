@@ -23,13 +23,8 @@ Extra Features added:
   - Added Footered
   - Amnimate Product list. When hovering a product the product it will Sclae
     1.05%
-
-Features to be added to the build:
-
-- Add green popup to the rightcorner "Added to basket" "Item Name" (create state
-  do display and setTimeout to close it after 3 seconds and pop it from the
-  state) - Special trick if you spam, stack the popup (update state with product
-  name for each click), how to close one at a time
+  - Added Notification popup that fires on the top righ corner when an item is
+    added to basket
 
 Future Features:
 

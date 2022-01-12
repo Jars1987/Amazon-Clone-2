@@ -9,7 +9,16 @@ import { useRouter } from 'next/router';
 const MAX_RATING = 5;
 const MIN_RATING = 1;
 
-function Product({ id, title, description, price, category, image, ratings }) {
+function Product({
+  id,
+  title,
+  description,
+  price,
+  category,
+  image,
+  ratings,
+  createNotification,
+}) {
   const router = useRouter();
   const dispatch = useDispatch();
   const [rating] = useState(Math.floor(ratings.rate) + MIN_RATING);
@@ -28,6 +37,7 @@ function Product({ id, title, description, price, category, image, ratings }) {
       quantity: 1,
     };
     dispatch(addToBasket(product));
+    createNotification(product.title);
   };
 
   const goToProduct = () => {

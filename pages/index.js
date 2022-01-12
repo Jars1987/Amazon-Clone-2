@@ -4,9 +4,22 @@ import Banner from '../components/Banner';
 import ProductFeed from '../components/ProductFeed';
 import Footer from '../components/Footer';
 import { useRef } from 'react';
+import 'react-notifications/lib/notifications.css';
+import {
+  NotificationContainer,
+  NotificationManager,
+} from 'react-notifications';
 
 export default function Home({ products }) {
   const topPageRef = useRef(null);
+
+  const createNotification = productName => {
+    return NotificationManager.success(
+      `${productName} was added to your basket!`,
+      'Added to Basket',
+      2000
+    );
+  };
 
   const scrollToTop = () => {
     topPageRef.current.scrollIntoView({
@@ -28,11 +41,15 @@ export default function Home({ products }) {
         <Banner />
 
         {/* Product Feed */}
-        <ProductFeed products={products} />
+        <ProductFeed
+          products={products}
+          createNotification={createNotification}
+        />
       </main>
       <footer>
         <Footer scrollToTop={scrollToTop} />
       </footer>
+      <NotificationContainer />
     </div>
   );
 }
