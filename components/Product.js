@@ -10,8 +10,6 @@ const MAX_RATING = 5;
 const MIN_RATING = 1;
 
 function Product({ id, title, description, price, category, image, ratings }) {
-  console.log(ratings);
-
   const router = useRouter();
   const dispatch = useDispatch();
   const [rating] = useState(Math.floor(ratings.rate) + MIN_RATING);

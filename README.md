@@ -18,20 +18,19 @@ Extra Features added:
   to change in state, there is a limited time for the transiction to happen.
   - Added image when the cart is empty and a text/button to continue shopping
     that redirects to homepage.
+- Show Product Page after clicking in a product and display full description and
+  Related products
 
 Features to be added to the build:
 
+- Add Footer
 - Amnimate Product list. When hovering a product the product it will Sclae 1.05%
-
 - Add green popup to the rightcorner "Added to basket" "Item Name" (create state
   do display and setTimeout to close it after 3 seconds and pop it from the
   state) - Special trick if you spam, stack the popup (update state with product
   name for each click), how to close one at a time
 
-- Add Footer
-
-- Show Product Page after clicking in a product and display full description,
-  collection of images bigger size
+Future Features:
 
 - Implement Watched products state: When clicking add Product to a basket or
   checking the product page add a redux state for watched products

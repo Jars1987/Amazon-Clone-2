@@ -7,6 +7,7 @@ module.exports = {
       'firebasestorage.googleapis.com',
       'fakestoreapi.com',
       'cdn4.vectorstock.com',
+      'images-na.ssl-images-amazon.com',
     ],
   },
   env: {

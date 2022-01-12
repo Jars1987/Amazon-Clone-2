@@ -36,7 +36,7 @@ function ProductCard({
   };
 
   return (
-    <div className=' m-8 lg:m-20 md:grid md:grid-cols-12 mt-10 pb-10 border-b border-gray-200'>
+    <div className=' ml-8 mt-10 mr-8 lg:m-20 md:grid md:grid-cols-12 pb-10 border-b border-gray-200'>
       <div className='md:col-span-4'>
         <Image
           className='cursor-pointer'

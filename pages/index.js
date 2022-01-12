@@ -2,10 +2,21 @@ import Head from 'next/head';
 import HeaderComponent from '../components/HeaderComponent';
 import Banner from '../components/Banner';
 import ProductFeed from '../components/ProductFeed';
+import Footer from '../components/Footer';
+import { useRef } from 'react';
 
 export default function Home({ products }) {
+  const topPageRef = useRef(null);
+
+  const scrollToTop = () => {
+    topPageRef.current.scrollIntoView({
+      behaviour: 'smooth',
+      block: 'start',
+    });
+  };
+
   return (
-    <div className='bg-gray-100'>
+    <div ref={topPageRef} className='bg-gray-100'>
       <Head>
         <title>Amazon 2.0</title>
       </Head>
@@ -19,6 +30,9 @@ export default function Home({ products }) {
         {/* Product Feed */}
         <ProductFeed products={products} />
       </main>
+      <footer>
+        <Footer scrollToTop={scrollToTop} />
+      </footer>
     </div>
   );
 }

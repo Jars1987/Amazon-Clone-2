@@ -14,6 +14,8 @@ import axios from 'axios';
 import { ShoppingCartIcon } from '@heroicons/react/outline';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useRouter } from 'next/router';
+import Footer from '../components/Footer';
+import { useRef } from 'react';
 
 const stripePromise = loadStripe(process.env.stripe_public_key);
 
@@ -23,6 +25,15 @@ function Checkout() {
   const items = useSelector(selectItems);
   const totalItems = useSelector(selectTotalQty);
   const totalPrice = useSelector(selectTotalPrice);
+
+  const topPageRef = useRef(null);
+
+  const scrollToTop = () => {
+    topPageRef.current.scrollIntoView({
+      behaviour: 'smooth',
+      block: 'start',
+    });
+  };
 
   const createCheckoutSession = async () => {
     const stripe = await stripePromise;
@@ -42,7 +53,9 @@ function Checkout() {
   };
 
   return (
-    <div className={`bg-gray-100 ${items.length === 0 && 'h-screen'}`}>
+    <div
+      ref={topPageRef}
+      className={`bg-gray-100 ${items.length === 0 && 'h-screen'}`}>
       <HeaderComponent />
 
       <main
@@ -121,6 +134,9 @@ function Checkout() {
           </>
         )}
       </main>
+      <footer>
+        <Footer scrollToTop={scrollToTop} />
+      </footer>
     </div>
   );
 }
